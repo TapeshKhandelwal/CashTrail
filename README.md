@@ -2,7 +2,9 @@
 
 A Cash Management & Reconciliation System for a lending company. It tracks every loan repayment from the customer, through the collection agent and the branch, to the bank deposit and the company account, and flags any rupee that goes missing on the way.
 
-**Live app:** _to be added after deployment_
+**Live app:** https://cashtrail-cmrs.vercel.app · **API docs (Swagger):** https://cashtrail-api.onrender.com/api/docs/
+
+The API runs on a free hosting plan that sleeps when idle, so the first request after a quiet period can take up to a minute.
 
 ## Documentation
 
