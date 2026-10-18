@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+backend/staticfiles/
+backend/media/
+
+# Env
+.env
+.env.local
+!.env.example
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Docs: only the project-level documents are published
+*.md
+!/README.md
+!/SETUP.md
+!/ENVIRONMENT.md
+!/DATABASE.md
+!/API.md
+docs/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

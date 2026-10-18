@@ -1,0 +1,26 @@
+# Dependencies and build output (rebuilt inside the image)
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Local environment and secrets: NEXT_PUBLIC_* values come from build arguments
+.env
+.env.*
+
+# Generated OpenAPI schema (the TypeScript types live in src/types/api.d.ts)
+openapi.yaml
+
+# Logs, Docker, editor, OS
+npm-debug.log*
+Dockerfile
+.dockerignore
+.vercel/
+.DS_Store
+.vscode/
+.idea/
+*.pem
+*.md

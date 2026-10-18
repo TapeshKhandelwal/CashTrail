@@ -1,0 +1,769 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "tailwindcss-safe-area";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Palette ─────────────────────────────────────────────────────────
+   Ink on warm paper. Colour carries meaning only: lifecycle status, money
+   direction and the brand mark. Every status has a mark colour (dots, rules,
+   washes) and an -fg colour that passes AA as small text on paper and sunk. */
+:root,
+.light {
+  color-scheme: light;
+
+  --paper: #fbfaf7;
+  --sunk: #f4f2ec;
+  --raised: #ffffff;
+  --rule: #e6e3da;
+  --rule-strong: #d3cfc3;
+  --ink: #121417;
+  --ink-soft: #2a2e34;
+  --dim: #5c6068;
+  --faint: #6f737b;
+  --brand: #14674f;
+  --brand-tint: #e7f1ec;
+  --focus: rgb(20 103 79 / 0.35);
+  --scrim: rgb(18 20 23 / 0.32);
+
+  --st-expected: #8e9299;
+  --st-expected-fg: #696d74;
+  --st-collected: #a9641a;
+  --st-collected-fg: #9e5d18;
+  --st-submitted: #6a5aa6;
+  --st-submitted-fg: #6a5aa6;
+  --st-received: #2e5fb5;
+  --st-received-fg: #2e5fb5;
+  --st-deposited: #147a86;
+  --st-deposited-fg: #147884;
+  --st-settled: #14674f;
+  --st-settled-fg: #14674f;
+  --st-rejected: #b3443a;
+  --st-rejected-fg: #b3443a;
+  --st-failed: #9a3550;
+  --st-failed-fg: #9a3550;
+  --st-voided: #8e9299;
+  --st-voided-fg: #696d74;
+  --st-short: #c0571e;
+  --st-short-fg: #b1501c;
+  --st-excess: #2e5fb5;
+  --st-excess-fg: #2e5fb5;
+  --st-delayed: #a9641a;
+  --st-delayed-fg: #9e5d18;
+  --st-upi: #3f4fa8;
+  --st-upi-fg: #3f4fa8;
+
+  --float-shadow: 0 24px 48px -24px rgb(18 20 23 / 0.18), 0 2px 6px rgb(18 20 23 / 0.05);
+  --lift-shadow: 0 1px 2px rgb(18 20 23 / 0.06), 0 1px 1px rgb(18 20 23 / 0.03);
+}
+
+/* Night ledger: the same restraint, lifted for contrast. No glows. */
+.dark {
+  color-scheme: dark;
+
+  --paper: #0f1012;
+  --sunk: #15171a;
+  --raised: #181a1e;
+  --rule: #26292e;
+  --rule-strong: #34383e;
+  --ink: #eceae4;
+  --ink-soft: #d6d3cc;
+  --dim: #a3a6ac;
+  --faint: #80848b;
+  --brand: #4fbf98;
+  --brand-tint: color-mix(in oklab, #4fbf98 13%, #0f1012);
+  --focus: rgb(79 191 152 / 0.4);
+  --scrim: rgb(0 0 0 / 0.55);
+
+  --st-expected: #8e9299;
+  --st-expected-fg: #9a9ea5;
+  --st-collected: #c6751e;
+  --st-collected-fg: #d4893a;
+  --st-submitted: #8e82bb;
+  --st-submitted-fg: #a399cb;
+  --st-received: #5c88d6;
+  --st-received-fg: #7ea1e0;
+  --st-deposited: #1996a5;
+  --st-deposited-fg: #3bb2c0;
+  --st-settled: #4fbf98;
+  --st-settled-fg: #4fbf98;
+  --st-rejected: #cd6d65;
+  --st-rejected-fg: #da8a83;
+  --st-failed: #cc6b85;
+  --st-failed-fg: #d98aa0;
+  --st-voided: #73777e;
+  --st-voided-fg: #9a9ea5;
+  --st-short: #dd6625;
+  --st-short-fg: #e9864e;
+  --st-excess: #5c88d6;
+  --st-excess-fg: #7ea1e0;
+  --st-delayed: #c6751e;
+  --st-delayed-fg: #d4893a;
+  --st-upi: #7784cc;
+  --st-upi-fg: #949fd8;
+
+  --float-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.7), 0 2px 6px rgb(0 0 0 / 0.35);
+  --lift-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+/* shadcn variables, recomputed wherever a theme class applies so nested
+   `.light` / `.dark` islands (receipt print, previews) resolve correctly. */
+:root,
+.light,
+.dark {
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--raised);
+  --card-foreground: var(--ink);
+  --popover: var(--raised);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--sunk);
+  --secondary-foreground: var(--ink);
+  --muted: var(--sunk);
+  --muted-foreground: var(--dim);
+  --accent: var(--sunk);
+  --accent-foreground: var(--ink);
+  --destructive: var(--st-rejected);
+  --destructive-foreground: #ffffff;
+  --border: var(--rule);
+  --input: var(--rule-strong);
+  --ring: var(--brand);
+  --radius: 0.75rem;
+
+  --success: var(--st-settled);
+  --success-fg: var(--st-settled-fg);
+  --warning: var(--st-collected);
+  --warning-fg: var(--st-collected-fg);
+  --danger: var(--st-rejected);
+  --danger-fg: var(--st-rejected-fg);
+  --info: var(--st-received);
+  --info-fg: var(--st-received-fg);
+
+  /* Charts: ink for expected, brand for collected and settled, then the
+     lifecycle colours in stage order. */
+  --chart-1: var(--brand);
+  --chart-2: var(--ink);
+  --chart-3: var(--st-deposited);
+  --chart-4: var(--st-collected);
+  --chart-5: var(--st-submitted);
+  --chart-6: var(--st-upi);
+  --chart-grid: var(--rule);
+  --chart-tick: var(--faint);
+
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--sunk);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--rule);
+  --sidebar-ring: var(--brand);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-sunk: var(--sunk);
+  --color-raised: var(--raised);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-dim: var(--dim);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-tint: var(--brand-tint);
+  --color-focus: var(--focus);
+  --color-scrim: var(--scrim);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-fg: var(--success-fg);
+  --color-warning: var(--warning);
+  --color-warning-fg: var(--warning-fg);
+  --color-danger: var(--danger);
+  --color-danger-fg: var(--danger-fg);
+  --color-info: var(--info);
+  --color-info-fg: var(--info-fg);
+
+  --color-st-expected: var(--st-expected);
+  --color-st-expected-fg: var(--st-expected-fg);
+  --color-st-collected: var(--st-collected);
+  --color-st-collected-fg: var(--st-collected-fg);
+  --color-st-submitted: var(--st-submitted);
+  --color-st-submitted-fg: var(--st-submitted-fg);
+  --color-st-received: var(--st-received);
+  --color-st-received-fg: var(--st-received-fg);
+  --color-st-deposited: var(--st-deposited);
+  --color-st-deposited-fg: var(--st-deposited-fg);
+  --color-st-settled: var(--st-settled);
+  --color-st-settled-fg: var(--st-settled-fg);
+  --color-st-rejected: var(--st-rejected);
+  --color-st-rejected-fg: var(--st-rejected-fg);
+  --color-st-failed: var(--st-failed);
+  --color-st-failed-fg: var(--st-failed-fg);
+  --color-st-voided: var(--st-voided);
+  --color-st-voided-fg: var(--st-voided-fg);
+  --color-st-short: var(--st-short);
+  --color-st-short-fg: var(--st-short-fg);
+  --color-st-excess: var(--st-excess);
+  --color-st-excess-fg: var(--st-excess-fg);
+  --color-st-delayed: var(--st-delayed);
+  --color-st-delayed-fg: var(--st-delayed-fg);
+  --color-st-upi: var(--st-upi);
+  --color-st-upi-fg: var(--st-upi-fg);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-display: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --shadow-float: var(--float-shadow);
+  --shadow-lift: var(--lift-shadow);
+}
+
+@theme {
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
+
+  /* App type scale: 12.5 / 13.5 replace Tailwind's 12 / 14. Base stays 16 so
+     form fields never trigger iOS zoom. */
+  --text-xs: 0.78125rem;
+  --text-xs--line-height: 1.45;
+  --text-sm: 0.84375rem;
+  --text-sm--line-height: 1.5;
+
+  /* The only three curves. Entrances, long travel, small UI feedback. */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.46, 0.64, 1);
+
+  --animate-shimmer: shimmer 1.8s ease-in-out infinite;
+  /* Backwards fill only: a transform left on the page wrapper would pin fixed bars to it. */
+  --animate-page-enter: page-enter 180ms var(--ease-out-quint) backwards;
+  --animate-rise: rise 520ms var(--ease-out-quint) both;
+  --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
+
+  @keyframes shimmer {
+    from { background-position: 150% 0; }
+    to { background-position: -50% 0; }
+  }
+  @keyframes page-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 0.55; }
+    70%, 100% { transform: scale(2); opacity: 0; }
+  }
+}
+
+/* ── Base ──────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    background: var(--background);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 20%, transparent);
+    color: var(--ink);
+  }
+  @media (display-mode: standalone) {
+    html {
+      overscroll-behavior-y: none;
+    }
+  }
+}
+
+/* ── Typography ───────────────────────────────────────────────────────
+   Newsreader carries an optical-size axis; with optical sizing on, a 96px
+   headline gets the high-contrast cut and a 20px title the sturdy one. */
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  /* The mono label above every title, section and KPI. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.3;
+    font-weight: 450;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* Page title in the app: 28px on phones, 32px from md. */
+  .title-page {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+  }
+  @media (min-width: 48rem) {
+    .title-page {
+      font-size: 2rem;
+    }
+  }
+
+  /* Section and dialog titles. */
+  .title-section {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: 1.375rem;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  /* Big numbers: KPIs, cash in hand. The ₹ is set smaller by <Money symbol="dim">. */
+  .figure {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1.75rem;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  @media (min-width: 80rem) {
+    .figure {
+      font-size: 2.125rem;
+    }
+  }
+
+  /* A grid whose 1px gaps show the rule colour: hairlines without borders. */
+  .grid-ruled {
+    display: grid;
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-xl);
+    background: var(--rule);
+  }
+  .grid-ruled > * {
+    background: var(--raised);
+  }
+}
+
+@utility hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rule) 16%, var(--rule) 84%, transparent);
+}
+
+@utility hairline-v {
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--rule) 16%, var(--rule) 84%, transparent);
+}
+
+@utility skeleton {
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+      100deg,
+      transparent 30%,
+      color-mix(in oklab, var(--raised) 70%, transparent) 50%,
+      transparent 70%
+    )
+    var(--sunk);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* Receipt edges: a row of half-circle notches top and bottom, like a counterfoil. */
+@utility perforated {
+  --notch: 5px;
+  mask:
+    radial-gradient(circle var(--notch) at 50% 0, #0000 98%, #000) 50% 0 / calc(var(--notch) * 3.2) 51% repeat-x,
+    radial-gradient(circle var(--notch) at 50% 100%, #0000 98%, #000) 50% 100% / calc(var(--notch) * 3.2) 51% repeat-x;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── Touch and small screens ─────────────────────────────────────────── */
+
+/* Compact controls keep their look but get a 44px hit area on touch screens. Needs a
+   positioned element. */
+@utility hit-area {
+  @media (pointer: coarse) {
+    &::after {
+      content: "";
+      position: absolute;
+      inset: min(0px, calc((100% - 2.75rem) / 2));
+    }
+  }
+}
+
+/* Height of the bar pinned to the bottom of a phone screen, for toasts and floating bars. */
+@media (max-width: 47.99rem) {
+  :root:has([data-bottom-bar]) {
+    --bottom-bar-height: 4rem;
+  }
+  :root:has([data-sticky-action]) {
+    --bottom-bar-height: 4.5rem;
+  }
+}
+
+/* On phones a grid item may shrink below its content, so one wide table scrolls inside its
+   card instead of widening the page. */
+@media (max-width: 47.99rem) {
+  #main-content .grid > *,
+  #main-content .grid-ruled > * {
+    min-width: 0;
+  }
+}
+
+/* Edge ticks ("17 Oct") may run into the card padding rather than being cut off. */
+.recharts-surface {
+  overflow: visible;
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────
+   Discrete entrances run on one IntersectionObserver (<RevealObserver>).
+   Hidden states are scoped to html.js-reveal, which is only set once the
+   observer runs, so content is never stranded at opacity 0 without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-reveal .reveal,
+  html.js-reveal .reveal-lift,
+  html.js-reveal .reveal-blur,
+  html.js-reveal .reveal-mask,
+  html.js-reveal .stagger > * {
+    transition-delay: var(--reveal-delay, 0s);
+    transition-timing-function: var(--ease-out-quint);
+    transition-duration: 0.72s;
+  }
+
+  html.js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition-property: opacity, transform;
+  }
+
+  html.js-reveal .reveal-lift {
+    opacity: 0;
+    transform: translateY(28px) scale(0.988);
+    transition-property: opacity, transform;
+    transition-duration: 0.84s;
+    transition-timing-function: var(--ease-out-expo);
+  }
+
+  /* Short single-line statements only: blur is expensive. */
+  html.js-reveal .reveal-blur {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(10px);
+    transition-property: opacity, transform, filter;
+    transition-duration: 0.9s;
+  }
+
+  /* Framed demos: the window opens, the content stays put. */
+  html.js-reveal .reveal-mask {
+    opacity: 0;
+    clip-path: inset(0 0 38% 0 round var(--radius-2xl));
+    transform: translateY(18px);
+    transition-property: opacity, transform, clip-path;
+    transition-duration: 1s;
+    transition-timing-function: var(--ease-out-expo);
+  }
+
+  html.js-reveal .stagger > * {
+    opacity: 0;
+    transform: translateY(22px);
+    transition-property: opacity, transform;
+    transition-duration: 0.78s;
+  }
+
+  html.js-reveal .reveal.is-in,
+  html.js-reveal .reveal-lift.is-in,
+  html.js-reveal .reveal-blur.is-in,
+  html.js-reveal .stagger.is-in > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  /* Only framed demos open through a rounded window; text must never be clipped. Kept as its
+     own complete rule so the minifier cannot fold the clip into the shared end state. */
+  html.js-reveal .reveal-mask.is-in {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0 round var(--radius-2xl));
+  }
+
+  /* Continuous, scroll-linked motion runs on the compositor; engines without
+     scroll timelines simply get a static page. */
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      transform-origin: 0 50%;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root block);
+    }
+    .hero-depart {
+      animation: depart linear both;
+      animation-timeline: view(block);
+      animation-range: exit-crossing 0% exit 80%;
+    }
+    .parallax-slow {
+      animation: parallax-slow linear both;
+      animation-timeline: view(block);
+      animation-range: cover 0% cover 100%;
+    }
+  }
+
+  /* App: a page's content rises 8px as it arrives (see app/app/template.tsx). */
+  .page-enter {
+    animation: var(--animate-page-enter);
+  }
+
+  /* First-load cascade for table rows and lists; seven steps, then together. */
+  .rows-enter > * {
+    animation: var(--animate-rise);
+    animation-duration: 420ms;
+  }
+  .rows-enter > :nth-child(2) { animation-delay: 30ms; }
+  .rows-enter > :nth-child(3) { animation-delay: 60ms; }
+  .rows-enter > :nth-child(4) { animation-delay: 90ms; }
+  .rows-enter > :nth-child(5) { animation-delay: 120ms; }
+  .rows-enter > :nth-child(6) { animation-delay: 150ms; }
+  .rows-enter > :nth-child(7) { animation-delay: 180ms; }
+  .rows-enter > :nth-child(n + 8) { animation-delay: 210ms; }
+}
+
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes depart {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(-40px); }
+}
+@keyframes parallax-slow {
+  from { transform: translateY(-5%); }
+  to { transform: translateY(5%); }
+}
+/* Logo hover: the trail pulls back into the receipt, then runs out again. */
+@keyframes trail-redraw {
+  0% { clip-path: inset(0 0 0 0); }
+  35% { clip-path: inset(0 100% 100% 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes top-progress {
+  0% { transform: translateX(-100%) scaleX(0.3); }
+  50% { transform: translateX(0%) scaleX(0.6); }
+  100% { transform: translateX(100%) scaleX(0.3); }
+}
+
+/* A stroke that draws itself. Paths set pathLength="1", so one dash covers
+   the whole stroke and animating its offset draws it from start to end. */
+.tick-draw path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tick-draw 420ms var(--ease-out-quint) 80ms forwards;
+}
+@keyframes tick-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Masked line reveal (<RevealLines>): each line rises out of its own clip. */
+.line-rise {
+  animation: line-rise 1s var(--ease-out-expo) both;
+  animation-delay: var(--line-delay, 0s);
+}
+@keyframes line-rise {
+  from { transform: translateY(105%); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+/* Lenis drives scrolling on the marketing page; native smooth scroll would fight it. */
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .tick-draw path {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── Print: receipts and reports print on white in the light palette ─── */
+@media print {
+  .dark {
+    color-scheme: light;
+    --paper: #ffffff;
+    --sunk: #f4f2ec;
+    --raised: #ffffff;
+    --rule: #d3cfc3;
+    --rule-strong: #b9b4a6;
+    --ink: #121417;
+    --dim: #4a4e55;
+    --faint: #5c6068;
+    --brand: #14674f;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  .no-print,
+  [data-print="hide"] {
+    display: none !important;
+  }
+  [data-print="plain"] {
+    box-shadow: none !important;
+    mask: none !important;
+    border: 0 !important;
+  }
+  a[href]::after {
+    content: none !important;
+  }
+}
+
+/* Landing: a coin of light travelling each hand-off of the cash-flow diagram. */
+.cash-pulse {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cash-pulse {
+    display: block;
+    top: 50%;
+    left: 0;
+    translate: -50% -50%;
+    animation: cash-pulse-x 2.75s var(--ease-out-quint) infinite;
+  }
+  @media (max-width: 767px) {
+    .cash-pulse {
+      top: 0;
+      left: 50%;
+      animation-name: cash-pulse-y;
+    }
+  }
+}
+@keyframes cash-pulse-x {
+  0% { left: 0; opacity: 0; }
+  12%, 82% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+@keyframes cash-pulse-y {
+  0% { top: 0; opacity: 0; }
+  12%, 82% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Paper grain for marketing surfaces: an inline SVG noise tile, no request. */
+.grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Product collage: each card drifts on its own slow loop so the composition breathes. */
+@media (prefers-reduced-motion: no-preference) {
+  .float-a { animation: float-y 9s ease-in-out infinite; }
+  .float-b { animation: float-y 11s ease-in-out -3s infinite; }
+  .float-c { animation: float-y 10s ease-in-out -6s infinite; }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
